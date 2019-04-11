@@ -47,6 +47,7 @@ class UserController {
 
             let btn = this.formEl.querySelector("[type=submit]");
 
+            // Desabilitando o botão submit enquanto processa as informações do formulário
             btn.disabled = true;
             
             let values = this.getValues();
@@ -57,7 +58,13 @@ class UserController {
                 values.photo = content;
                 
                 this.addLine(values);
-
+                
+                // Limpando o Formulário
+                this.formEl.reset();
+                
+                // Habilitando o botão submit depois do processamento das informações
+                btn.disabled = false;
+                
                 },
                 (e) => {
                     console.error(e);
@@ -116,7 +123,7 @@ class UserController {
                 <td>${dataUser.name}</td>
                 <td>${dataUser.email}</td>
                 <td>${(dataUser.admin)?'Sim':'Não'}</td>       
-                <td>${dataUser.birth}</td>
+                <td>${dataUser.register}</td>
                 <td>
                     <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
                     <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
