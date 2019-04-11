@@ -21,9 +21,30 @@ class UserController {
             if(['name', 'email', 'password'].indexOf(campo.name) > -1 && !campo.value) {
 
                 // Exibe os dados do objeto em forma de árvore com subniveis no console do navegador
-               // console.dir(campo)
-               // add uma nova classe para o parentElement(form-group)do campo
+                console.dir(campo)
+                console.log(campo.name);
+                
+                // add uma nova classe para o parentElement(form-group)do campo
                 campo.parentElement.classList.add('has-error');
+                
+                // Criando um novo elemento p para dar o erro
+                let p = document.createElement('p');
+
+                if(campo.name === 'name') {
+                    p.innerHTML = '* Por favor, preencha o nome corretamente';
+                    p.classList.add('help-block');
+                    campo.parentElement.appendChild(p);
+                }
+                else if(campo.name === 'email') {
+                    p.innerHTML = '* Por favor, preencha o email corretamente';
+                    p.classList.add('help-block');
+                    campo.parentElement.appendChild(p);
+                }
+                else if(campo.name === 'password') {
+                    p.innerHTML = '* Por favor, preencha a senha corretamente';
+                    p.classList.add('help-block');
+                    campo.parentElement.appendChild(p);
+                }
         
                 isValid = false;
             }
@@ -67,6 +88,8 @@ class UserController {
             btn.disabled = true;
             
             let values = this.getValues();
+
+            if(!values) return false;
 
             this.getPhoto().then(
                 (content) => {
