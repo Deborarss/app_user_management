@@ -157,6 +157,15 @@ class UserController {
         
         let tr = document.createElement('tr');
 
+        // A propriedade dataset permite o acesso, em modo de leitura e escrita, a todos os atributos de dados personalizado no elemento. user = nome da variavel
+        // dataset só guarda string
+        // Como o dataset só guarda string precisaremos serializar o objeto dataUser, ou seja, transformar o objeto em texto
+        // tr.dataset.user = JSON.stringify(dataUser);
+
+        tr.setAttribute('data-user', JSON.stringify({
+            admin: dataUser.admin
+        }));
+
         tr.innerHTML = `
                 <td><img src="${dataUser.photo}" alt="User Image" class="img-circle img-sm"></td>
                 <td>${dataUser.name}</td>
@@ -170,6 +179,42 @@ class UserController {
         `;
 
         this.tableEl.appendChild(tr);
+
+        this.updateCount();
     
+    }
+
+    // Atualizando contadores de admins e users
+    updateCount() {
+
+        //console.log(this.tableEl);
+        // Exibe os dados do objeto em forma de árvore com subniveis no console do navegador
+        //console.dir(this.tableEl);
+
+        let numberUsers = 0;
+        let numberAdmins = 0;
+
+        // Convertendo em array
+        [...this.tableEl.children].forEach(tr => {
+
+            numberUsers++;
+
+            //console.log(tr.dataset.user);
+
+            // Tranformando a string do dataset.user em objeto
+            // console.log(JSON.parse(tr.dataset.user));
+
+            //let user = JSON.parse(tr.dataset.user);
+
+            let user = JSON.parse(tr.getAttribute('data-user'));
+
+            console.log(user);
+            
+            if(user.admin) numberAdmins++; 
+            
+        });
+
+        document.querySelector('#number-users').innerHTML = numberUsers;
+        document.querySelector('#number-users-admins').innerHTML = numberAdmins;
     }
 }
