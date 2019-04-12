@@ -6,6 +6,7 @@ class UserController {
         this.tableEl = document.getElementById(tableId);
 
         this.onSubmit();     
+        this.onEdit();
     }
 
     getValues(){
@@ -75,6 +76,16 @@ class UserController {
         // Objeto é uma instância de uma classe
         return new User(user.name, user.gender, user.birth, user.country, user.email, user.password, user.photo, user.admin);
     } 
+
+    // Botão edit
+    onEdit() {
+
+        document.querySelector('#box-user-update .btn-cancel').addEventListener('click', e => {
+
+            this.showPanelCreate();     
+
+        });
+    }
 
     onSubmit(){
         // arrow Function
@@ -160,11 +171,11 @@ class UserController {
         // A propriedade dataset permite o acesso, em modo de leitura e escrita, a todos os atributos de dados personalizado no elemento. user = nome da variavel
         // dataset só guarda string
         // Como o dataset só guarda string precisaremos serializar o objeto dataUser, ou seja, transformar o objeto em texto
-        // tr.dataset.user = JSON.stringify(dataUser);
+        tr.dataset.user = JSON.stringify(dataUser);
 
-        tr.setAttribute('data-user', JSON.stringify({
+        /*tr.setAttribute('data-user', JSON.stringify({
             admin: dataUser.admin
-        }));
+        }));*/
 
         tr.innerHTML = `
                 <td><img src="${dataUser.photo}" alt="User Image" class="img-circle img-sm"></td>
@@ -173,15 +184,38 @@ class UserController {
                 <td>${(dataUser.admin)?'Sim':'Não'}</td>       
                 <td>${Utils.dateFormat(dataUser.register)}</td>
                 <td>
-                    <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
+                    <button type="button" class="btn btn-primary btn-edit btn-xs btn-flat">Editar</button>
                     <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
                 </td>
         `;
+
+
+        // Botão editar
+        tr.querySelector(".btn-edit").addEventListener("click", e => {
+
+            //console.log(tr.getAttribute('data-user'));
+            //console.log(tr.dataset.user);
+                      
+            this.showPanelUpdate();
+
+        });       
 
         this.tableEl.appendChild(tr);
 
         this.updateCount();
     
+    }
+
+    showPanelCreate() {
+
+        document.querySelector('#box-user-update').style.display = 'none';
+        document.querySelector('#box-user-create').style.display = 'block';  
+    }
+
+    showPanelUpdate() {
+
+        document.querySelector('#box-user-create').style.display = 'none';
+        document.querySelector('#box-user-update').style.display = 'block';  
     }
 
     // Atualizando contadores de admins e users
@@ -202,13 +236,13 @@ class UserController {
             //console.log(tr.dataset.user);
 
             // Tranformando a string do dataset.user em objeto
-            // console.log(JSON.parse(tr.dataset.user));
+            console.log(JSON.parse(tr.dataset.user));
 
-            //let user = JSON.parse(tr.dataset.user);
+            let user = JSON.parse(tr.dataset.user);
 
-            let user = JSON.parse(tr.getAttribute('data-user'));
+            //let user = JSON.parse(tr.getAttribute('data-user'));
 
-            console.log(user);
+            //console.log(user);
             
             if(user.admin) numberAdmins++; 
             
