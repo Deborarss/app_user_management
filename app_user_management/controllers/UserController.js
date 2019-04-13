@@ -195,6 +195,47 @@ class UserController {
 
             //console.log(tr.getAttribute('data-user'));
             //console.log(tr.dataset.user);
+            
+            // Convertendo a string em objeto
+            let json = JSON.parse(tr.dataset.user);
+            //console.log(json);
+            let form = document.querySelector('#form-user-update');
+
+            // Laço para percorrer o objeto
+            for(let name in json) {
+
+                let field = form.querySelector('[name=' + name.replace('_','') + ']');
+
+                if(field) {
+
+                    //if(field.type == 'file') continue;
+
+                    //field.value = json[name];
+
+                    //console.log(field);
+                    //console.log(field.value);
+                    //console.log(json[name]);  
+                    
+                    switch(field.type) {
+                        case 'file':
+                        continue;
+                        break;
+                        
+                        case 'radio':
+                            field = form.querySelector('[name=' + name.replace('_','') + '][value=' + json[name] + ']');
+                            field.checked = true;
+                        break;
+
+                        case 'checkbox':
+                            field.checked = json[name];
+                        break;
+
+                        default: 
+                            field.value = json[name];
+                    }  
+                    
+                }
+            }
                       
             this.showPanelUpdate();
 
@@ -236,7 +277,7 @@ class UserController {
             //console.log(tr.dataset.user);
 
             // Tranformando a string do dataset.user em objeto
-            console.log(JSON.parse(tr.dataset.user));
+            //console.log(JSON.parse(tr.dataset.user));
 
             let user = JSON.parse(tr.dataset.user);
 
